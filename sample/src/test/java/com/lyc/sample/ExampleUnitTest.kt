@@ -23,7 +23,7 @@
  *
  */
 
-package com.lyc.imagelabelview
+package com.lyc.sample
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -36,16 +36,43 @@
         <EditText
                 android:id="@+id/url"
                 android:text="@string/url"
-                android:hint="图片url"
+                android:hint="@string/image_url"
                 android:singleLine="true"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content"/>
 
         <Button
-                android:text="下载图片"
+                android:text="@string/download"
                 android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <EditText
+            android:id="@+id/label_info"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:hint="@string/label_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button
+                android:enabled="false"
+                android:id="@+id/set_msg"
+                android:text="@string/set_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:enabled="false"
+                android:id="@+id/delete"
+                android:text="@string/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -56,14 +83,22 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <TextView
-                android:id="@+id/pos"
-                android:text="@string/url"
+                android:id="@+id/info_text"
                 android:singleLine="true"
                 android:layout_weight="1"
                 android:layout_width="0dp"
+                android:lines="3"
                 android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"/>
+
+        <Button
+                android:text="INFO"
+                android:id="@+id/show_info"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <Button

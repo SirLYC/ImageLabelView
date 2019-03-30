@@ -23,7 +23,7 @@
  *
  */
 
-package com.lyc.imagelabelview
+package com.lyc.sample
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

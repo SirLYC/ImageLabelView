@@ -46,6 +46,9 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
     private val gestureDetector: GestureDetector = GestureDetector(context, this)
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, this)
     private val edgeSlop = context.resources.displayMetrics.density * 12
+        get() {
+            return field / (scale * baseScale)
+        }
 
     // changed only in move mode
     private var transX = 0f
@@ -59,7 +62,8 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
     private var baseScale = 0f
 
     // current label to draw (in draw mode) or update (in update mode)
-    private var curLabel: Label<*>? = null
+    var curLabel: Label<*>? = null
+        private set
     // the labels already created
     // add like a stack
     // the smaller the index, the upper level (or the newer added) the label
@@ -70,8 +74,6 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
 
     private var downBitmapX = 0f
     private var downBitmapY = 0f
-
-    var previewAfterOperate = false
 
     companion object {
         // move or scale image
@@ -87,29 +89,34 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
 
         const val TAG = "ImageLabelView"
 
-        @IntDef(value = [PREVIEW, DRAW, UPDATE])
-        @Retention(AnnotationRetention.SOURCE)
-        private annotation class Mode
-
+        @JvmStatic
         fun modeToString(@Mode mode: Int) = when (mode) {
             PREVIEW -> "PREVIEW"
             DRAW -> "DRAW"
             UPDATE -> "UPDATE"
             SELECT -> "SELECT"
-            else -> "UNKNOWN"
+            else -> throw IllegalArgumentException("unknown mode: $mode")
         }
     }
 
+    @IntDef(value = [PREVIEW, DRAW, UPDATE])
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class Mode
+
+    private var _mode: Int = PREVIEW
+
     @Mode
-    var mode: Int = PREVIEW
+    var mode
+        get() = _mode
         @MainThread set(value) {
-            if (value == field) return
-            if (field == UPDATE || field == DRAW || field == SELECT) {
+            if (value == _mode) return
+            if (_mode == UPDATE || _mode == DRAW || _mode == SELECT) {
                 if (releaseCurrentLabel()) {
                     invalidate()
                 }
             }
-            field = value
+            modeChangeListener?.onModeChange(_mode, value)
+            _mode = value
         }
 
     /**
@@ -139,9 +146,10 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
                     curLabel?.let {
                         createdLabels.add(0, it)
                     }
+                } else {
+                    shouldRepaint = true
                 }
                 labelDrawListener?.onLabelDrawEnd(drawResult, if (drawResult) this else null)
-                shouldRepaint = true
                 return@run
             }
 
@@ -215,8 +223,13 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
 
     @MainThread
     fun removeLabel(label: Label<*>?): Boolean {
-        val result = createdLabels.remove(label)
+        var result = createdLabels.remove(label)
+        if (label == curLabel) {
+            result = releaseCurrentLabel() || result
+        }
         if (result) {
+            modeChangeListener?.onModeChange(_mode, PREVIEW)
+            _mode = PREVIEW
             invalidate()
         }
         return result
@@ -224,10 +237,25 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
 
     @MainThread
     fun removeAllLabels() {
-        if (createdLabels.isNotEmpty()) {
+        var update = createdLabels.isNotEmpty()
+        if (update) {
             createdLabels.clear()
+        }
+
+        update = releaseCurrentLabel() || update
+        if (update) {
+            modeChangeListener?.onModeChange(_mode, PREVIEW)
+            _mode = PREVIEW
             invalidate()
         }
+    }
+
+    fun mostRecentLabel(): Label<*>? {
+        if (createdLabels.isEmpty()) {
+            return null
+        }
+
+        return createdLabels[0]
     }
 
     /**
@@ -403,9 +431,17 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
             }
 
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                if (previewAfterOperate) {
-                    mode = PREVIEW
-                } else if (releaseCurrentLabel()) {
+                val label = curLabel!!
+                releaseCurrentLabel()
+                if (createdLabels.isNotEmpty() && createdLabels[0] === label) {
+                    _mode = SELECT
+                    modeChangeListener?.onModeChange(DRAW, SELECT)
+                    if (label.selectStart()) {
+                        labelSelectListener?.onLabelSelectStart(label)
+                        curLabel = label
+                        invalidate()
+                    }
+                } else {
                     invalidate()
                 }
 
@@ -477,14 +513,14 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
                 if (curLabel?.updateMove(bitmapX, bitmapY, bitmap.width.toFloat(), bitmap.height.toFloat()) == true) {
                     invalidate()
                 }
+                return true
             }
 
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                if (previewAfterOperate) {
-                    mode = PREVIEW
-                } else if (releaseCurrentLabel()) {
+                if (releaseCurrentLabel()) {
                     invalidate()
                 }
+                return true
             }
         }
 
@@ -723,5 +759,11 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
          * called when a label is finishing its selecting
          */
         fun onLabelSelectEnd(label: Label<*>)
+    }
+
+    var modeChangeListener: ModeChangeListener? = null
+
+    interface ModeChangeListener {
+        fun onModeChange(@Mode old: Int, @Mode new: Int)
     }
 }

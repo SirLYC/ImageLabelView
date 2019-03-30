@@ -136,6 +136,8 @@ class RectLabel : Label<FloatArray?>() {
     override fun onDrawStart(pointF: PointF) {
         baseRect.left = pointF.x
         baseRect.top = pointF.y
+        baseRect.right = pointF.x
+        baseRect.bottom = pointF.y
     }
 
     override fun onDrawMove(pointF: PointF) {

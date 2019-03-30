@@ -27,4 +27,9 @@
     <string name="app_name">ImageLabelView</string>
     <string name="url">
         <![CDATA[https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553866799&di=4c73b5abfa6ed586664ff17330f5211b&imgtype=jpg&er=1&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201705%2F08%2F20170508132428_kNyrL.jpeg]]></string>
+    <string name="label_info">input info for this label!</string>
+    <string name="download">download</string>
+    <string name="image_url">image url</string>
+    <string name="set_label">set label</string>
+    <string name="delete">delete label</string>
 </resources>

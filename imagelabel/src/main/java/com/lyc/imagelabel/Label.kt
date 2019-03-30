@@ -149,4 +149,8 @@ abstract class Label<DATA> {
      */
     @UpdateResult
     open fun updateEnd(): Int = RESULT_IGNORE
+
+    override fun toString(): String {
+        return "${javaClass.simpleName}: ${getData(startPoint, endPoint)} $message"
+    }
 }
