@@ -1,6 +1,9 @@
 # ImageLabelView
 [![](https://jitpack.io/v/SirLYC/ImageLabelView.svg)](https://jitpack.io/#SirLYC/ImageLabelView)
+
 A view for data-labeling(a tool for machine learning).
+
+[Chinese blog here.](https://juejin.im/post/5c9f57c251882567d41ebab6)
 
 ![1](https://github.com/SirLYC/ImageLabelView/blob/master/images/1.gif?raw=true)
 ![2](https://github.com/SirLYC/ImageLabelView/blob/master/images/2.gif?raw=true)
@@ -29,13 +32,6 @@ dependencies {
 **Step1.** Add to your layout
 
 Just write like this. **No custom attributes** for now.
-``` xml
-<com.lyc.imagelabel.ImageLabelView
-            android:id="@+id/label"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-```
 
 **Step2.** Set an image to the view
 
