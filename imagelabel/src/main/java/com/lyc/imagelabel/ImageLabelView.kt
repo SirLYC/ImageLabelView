@@ -46,9 +46,6 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
     private val gestureDetector: GestureDetector = GestureDetector(context, this)
     private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, this)
     private val edgeSlop = context.resources.displayMetrics.density * 12
-        get() {
-            return field / (scale * baseScale)
-        }
 
     // changed only in move mode
     private var transX = 0f
@@ -619,7 +616,6 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
                     x, y, edgeSlop, false
                 ) && it != curLabel && it.selectStart()
             ) {
-                labelSelectListener?.onLabelSelectStart(it)
                 newLabel = it
                 return@forEach
             }
@@ -633,7 +629,6 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
                         x, y, false
                     ) && it != curLabel && it.selectStart()
                 ) {
-                    labelSelectListener?.onLabelSelectStart(it)
                     newLabel = it
                     return@forEach
                 }
@@ -643,11 +638,12 @@ class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, att
         // release last label
         val release = releaseCurrentLabel()
         curLabel = newLabel
-
-        if (curLabel != null || release) {
+        if (curLabel != null) {
+            labelSelectListener?.onLabelSelectStart(curLabel!!)
+            invalidate()
+        } else if (release) {
             invalidate()
         }
-
 
         return true
     }

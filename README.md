@@ -1,6 +1,15 @@
 # ImageLabelView
 A view for data-labeling(a tool for machine learning).
 
+![1](https://github.com/SirLYC/ImageLabelView/blob/master/images/1.gif?raw=true)
+![2](https://github.com/SirLYC/ImageLabelView/blob/master/images/2.gif?raw=true)
+
+## Todo/Fix
+- [ ] fix state loss after config changes (such as screen orientation, languages...)
+- [ ] circle label
+- [ ] triangle label
+- [ ] other polygon label...
+
 ## License
 MIT License
 

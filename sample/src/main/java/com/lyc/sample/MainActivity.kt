@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLabelSelectStart(label: Label<*>) {
                 info_text.text = ("select start")
                 inputLabelMsg("${label.message ?: ""}")
-                Toast.makeText(this@MainActivity, "input a label for your new label!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "input a label for your label!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onLabelSelectEnd(label: Label<*>) {
