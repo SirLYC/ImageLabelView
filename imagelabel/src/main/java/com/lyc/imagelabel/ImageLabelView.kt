@@ -25,6 +25,7 @@
 
 package com.lyc.imagelabel
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
@@ -37,8 +38,18 @@ import androidx.annotation.*
  * @date 2019/3/22
  * @email kevinliu.sir@qq.com
  */
-class ImageLabelView(context: Context, attrs: AttributeSet?) : View(context, attrs), GestureDetector.OnGestureListener,
-    ScaleGestureDetector.OnScaleGestureListener {
+class ImageLabelView : View, GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener {
+
+    constructor(context: Context) : super(context)
+
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+    @TargetApi(21)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
+        context, attrs, defStyleAttr, defStyleRes
+    )
 
     // the image to be labeled
     private var labelBitmap: Bitmap? = null
