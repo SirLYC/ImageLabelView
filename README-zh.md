@@ -1,7 +1,7 @@
 # ImageLabelView
 [![](https://jitpack.io/v/SirLYC/ImageLabelView.svg)](https://jitpack.io/#SirLYC/ImageLabelView)
 
-[English](https://github.com/SirLYC/ImageLabelView/blob/master/README-zh.md)|[我的博客](https://juejin.im/user/592e23d3ac502e006c9afdd7)
+[English](https://github.com/SirLYC/ImageLabelView/blob/master/README.md) | [我的博客](https://juejin.im/user/592e23d3ac502e006c9afdd7)
 
 一款用于图片画框标注的工具。
 

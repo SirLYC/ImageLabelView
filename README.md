@@ -1,11 +1,9 @@
 # ImageLabelView
 [![](https://jitpack.io/v/SirLYC/ImageLabelView.svg)](https://jitpack.io/#SirLYC/ImageLabelView)
 
-[简体中文](https://github.com/SirLYC/ImageLabelView/blob/master/README-zh.md)|[My Blog(Chinese)](https://juejin.im/user/592e23d3ac502e006c9afdd7)
+[简体中文](https://github.com/SirLYC/ImageLabelView/blob/master/README-zh.md) | [My Blog(Chinese)](https://juejin.im/user/592e23d3ac502e006c9afdd7)
 
 A view for data-labeling(a tool for machine learning).
-
-[Chinese blog here.](https://juejin.im/post/5c9f57c251882567d41ebab6)
 
 ![1](https://github.com/SirLYC/ImageLabelView/blob/master/images/1.gif?raw=true)
 ![2](https://github.com/SirLYC/ImageLabelView/blob/master/images/2.gif?raw=true)
