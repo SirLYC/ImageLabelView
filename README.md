@@ -1,6 +1,8 @@
 # ImageLabelView
 [![](https://jitpack.io/v/SirLYC/ImageLabelView.svg)](https://jitpack.io/#SirLYC/ImageLabelView)
 
+[简体中文](https://github.com/SirLYC/ImageLabelView/blob/master/README-zh.md)|[My Blog(Chinese)](https://juejin.im/user/592e23d3ac502e006c9afdd7)
+
 A view for data-labeling(a tool for machine learning).
 
 [Chinese blog here.](https://juejin.im/post/5c9f57c251882567d41ebab6)
@@ -31,17 +33,32 @@ dependencies {
 
 **Step1.** Add to your layout
 
-Just write like this. **No custom attributes** for now.
+**Step2.** Set a LabelCreator
+The labelCreator is used when you draw a new label. It can create a new label via its createLabel() method.
+First, you need to implement a 
+```
+ImageLabelView#LabelCreator. 
+```
+There is a simple implementation in sample code for rect label:
+```kotlin
+label.labelCreator = object : ImageLabelView.LabelCreator {
+            override fun createLabel(): RectLabel {
+                return RectLabel()
+            }
+        }
+```
+**Remember to set it to set it to ImageLabelView's labelCreator.**
+> You can create any type of Label which may return different kinds of data.
 
-**Step2.** Set an image to the view
+**Step3.** Set an image to the view
 
 Set a bitmap to the ImageLabelView, and it will start to show this phone like a imageView with **center inside mode**. The bitmap can be null, which will let the view clear old labels...
 ```kotlin
 val bitmap: Bitmap? = ... // download or read from disk
-label.setBitmap(bitmap);
+label.setBitmap(bitmap)
 ```
 
-**Step3.** Do your job in different mode
+**Step4.** Do your job in different mode
 
 When a nonnull bitmap is present, there are 4 modes to operate a image.
 - PREVIEW<br>
@@ -59,16 +76,18 @@ label.selectingLabel()
 ```
 At this time, you may let user to input or do other things to change the message of the label or just delete it.
 
-### Step4: Collect your data
+**Step5.** Export your data
 Just get the label and call it's **getData()** or get its **message property**!
 
 ## Todo/Fix
+- [x] fix multi-selection problem when tap once
 - [ ] fix state loss after config changes (such as screen orientation, languages...)
 - [ ] circle label
 - [ ] triangle label
 - [ ] other polygon label...
 
 ## License
+```
 MIT License
 
 Copyright (c) 2019 Liu
@@ -90,3 +109,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```

@@ -48,7 +48,7 @@ class ImageLabelView : View, GestureDetector.OnGestureListener, ScaleGestureDete
 
     @TargetApi(21)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(
-        context, attrs, defStyleAttr, defStyleRes
+            context, attrs, defStyleAttr, defStyleRes
     )
 
     // the image to be labeled
@@ -490,22 +490,24 @@ class ImageLabelView : View, GestureDetector.OnGestureListener, ScaleGestureDete
                 curLabel = null
                 var updateNew = false
 
-                createdLabels.forEach {
-                    if (it.partialHitTest(bitmapX, bitmapY, edgeSlop, true)) {
-                        curLabel = it
-                        labelUpdateListener?.onLabelUpdateStart(it)
+                for (label in createdLabels) {
+                    if (label.partialHitTest(bitmapX, bitmapY, edgeSlop, true)) {
+                        curLabel = label
+                        labelUpdateListener?.onLabelUpdateStart(label)
                         updateNew = true
-                        return@forEach
+                        break
                     }
                 }
 
+                // not forEach anymore here
+                // cause "return @ForEach" equals to "continue" in Java
                 if (!updateNew) {
-                    createdLabels.forEach {
-                        if (it.hitTest(bitmapX, bitmapY, true)) {
-                            curLabel = it
-                            labelUpdateListener?.onLabelUpdateStart(it)
+                    for (label in createdLabels) {
+                        if (label.hitTest(bitmapX, bitmapY, true)) {
+                            curLabel = label
+                            labelUpdateListener?.onLabelUpdateStart(label)
                             updateNew = true
-                            return@forEach
+                            break
                         }
                     }
                 }
@@ -622,26 +624,26 @@ class ImageLabelView : View, GestureDetector.OnGestureListener, ScaleGestureDete
 
         // partial hit-test first
         // skip current selected label
-        createdLabels.forEach {
-            if (it.partialHitTest(downBitmapX, downBitmapY, edgeSlop, false) && it.partialHitTest(
-                    x, y, edgeSlop, false
-                ) && it != curLabel && it.selectStart()
+        for (label in createdLabels) {
+            if (label.partialHitTest(downBitmapX, downBitmapY, edgeSlop, false) && label.partialHitTest(
+                            x, y, edgeSlop, false
+                    ) && label != curLabel && label.selectStart()
             ) {
-                newLabel = it
-                return@forEach
+                newLabel = label
+                break
             }
         }
 
         // if no new label present, use full hit-test
         // skip current selected label
         if (newLabel == null) {
-            createdLabels.forEach {
-                if (it.hitTest(downBitmapX, downBitmapY, false) && it.hitTest(
-                        x, y, false
-                    ) && it != curLabel && it.selectStart()
+            for (label in createdLabels) {
+                if (label.hitTest(downBitmapX, downBitmapY, false) && label.hitTest(
+                                x, y, false
+                        ) && label != curLabel && label.selectStart()
                 ) {
-                    newLabel = it
-                    return@forEach
+                    newLabel = label
+                    break
                 }
             }
         }
