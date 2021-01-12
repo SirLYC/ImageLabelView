@@ -305,7 +305,7 @@ class ImageLabelView : View, GestureDetector.OnGestureListener, ScaleGestureDete
             finalW = vh * w2hb
             baseScale = finalH / bitmapHeight
             baseTransY = 0f
-            baseTransX = vw - finalW / 2
+            baseTransX = (vw - finalW) / 2
         } else {
             // should be center-vertical in this view
             finalW = vw
